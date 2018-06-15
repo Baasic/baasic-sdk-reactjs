@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "target": "es5",
+        "baseUrl": ".",
+        "typeRoots": ["node_modules/@types"],
+        "paths": {
+            "*": [
+                "*",
+                "src/*"
+            ]
+        },
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "importHelpers": true,
+        "noEmitHelpers": true,
+        "lib": [
+            "dom",
+            "es6"
+        ]
+
+    },
+    "exclude": [
+        "node_modules/",
+        "build/"
+    ]
+}
