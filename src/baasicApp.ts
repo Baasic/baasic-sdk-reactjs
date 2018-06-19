@@ -1,4 +1,4 @@
-import { IBaasicOptions, BaasicApp as BaasicSdkApp, IToken, IUser } from 'baasic-sdk-javascript';
+import { IBaasicOptions, BaasicApp as BaasicSdkApp } from 'baasic-sdk-javascript';
 import { HttpClient } from './infrastructure/httpApi/http-client';
 
 export class BaasicApp extends BaasicSdkApp {
