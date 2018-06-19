@@ -2,7 +2,16 @@
   "name": "baasic-sdk-reactjs",
   "version": "0.0.1-alpha01",
   "description": "ReactJS SDK provides core functionality for building web and mobile applications on [Baasic](http://www.baasic.com/).",
-  "keywords": ["Baasic", "BaaS", "sdk", "JavaScript", "ReactJS", "Backend", "browser", "client-side"],
+  "keywords": [
+    "Baasic",
+    "BaaS",
+    "sdk",
+    "JavaScript",
+    "ReactJS",
+    "Backend",
+    "browser",
+    "client-side"
+  ],
   "homepage": "http://www.baasic.com/",
   "main": "build/lib/index.js",
   "types": "build/lib/index.d.ts",
@@ -42,6 +51,6 @@
   },
   "peerDependencies": {},
   "dependencies": {
-    "baasic-sdk-javascript": "2.0.5-beta06"
+    "baasic-sdk-javascript": "2.0.5-beta07"
   }
 }
