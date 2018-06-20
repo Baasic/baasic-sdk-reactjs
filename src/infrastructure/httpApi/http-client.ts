@@ -11,12 +11,17 @@ export class HttpClient implements IHttpClient {
             const fetchRequest = new Request(request.url, options);
             fetch(fetchRequest)
                 .then(checkResponseStatus)
-                .then(response => resolve(response))
+                .then(response => {
+                    createBaasicResponse<ResponseType>(fetchRequest, response)
+                        .then(function (result) {
+                            resolve(result);
+                        });
+                })
                 .catch(ex => {
-                    reject({
-                        request: fetchRequest,
-                        response: ex.response
-                    });
+                    createBaasicResponse<ResponseType>(fetchRequest, ex.response)
+                        .then(function (result) {
+                            reject(result);
+                        });
                 });
         })
     };
@@ -56,4 +61,32 @@ function checkResponseStatus(response: Response): Response {
     }
 
     return response;
+}
+
+function createBaasicResponse<TData>(request: Request, response: Response): PromiseLike<IHttpResponse<TData>> {
+    const contentType = response.headers.get('Content-Type') || 'application/json';
+    const getBody = () => {
+        if (contentType.indexOf('application/json') !== -1) {
+            return response.json();
+        }
+
+        return response.text();
+    }
+
+    const result: IHttpResponse<TData> = {
+        request: request,
+        headers: response.headers,
+        statusCode: response.status,
+        statusText: response.statusText,
+        data: null
+    };
+
+    return new Promise(function (resolve, reject) {
+        getBody().then(function (response) {
+            result.data = response;
+            resolve(result);
+        }, function (error) {
+            resolve(result);
+        });
+    });
 }

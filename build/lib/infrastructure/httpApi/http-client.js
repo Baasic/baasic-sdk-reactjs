@@ -12,11 +12,16 @@ var HttpClient = (function () {
             var fetchRequest = new Request(request.url, options);
             fetch(fetchRequest)
                 .then(checkResponseStatus)
-                .then(function (response) { return resolve(response); })
+                .then(function (response) {
+                createBaasicResponse(fetchRequest, response)
+                    .then(function (result) {
+                    resolve(result);
+                });
+            })
                 .catch(function (ex) {
-                reject({
-                    request: fetchRequest,
-                    response: ex.response
+                createBaasicResponse(fetchRequest, ex.response)
+                    .then(function (result) {
+                    reject(result);
                 });
             });
         });
@@ -55,4 +60,28 @@ function checkResponseStatus(response) {
         throw ex;
     }
     return response;
+}
+function createBaasicResponse(request, response) {
+    var contentType = response.headers.get('Content-Type') || 'application/json';
+    var getBody = function () {
+        if (contentType.indexOf('application/json') !== -1) {
+            return response.json();
+        }
+        return response.text();
+    };
+    var result = {
+        request: request,
+        headers: response.headers,
+        statusCode: response.status,
+        statusText: response.statusText,
+        data: null
+    };
+    return new Promise(function (resolve, reject) {
+        getBody().then(function (response) {
+            result.data = response;
+            resolve(result);
+        }, function (error) {
+            resolve(result);
+        });
+    });
 }
