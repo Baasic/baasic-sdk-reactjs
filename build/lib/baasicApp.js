@@ -11,6 +11,14 @@ var BaasicApp = (function (_super) {
     return BaasicApp;
 }(baasic_sdk_javascript_1.BaasicApp));
 exports.BaasicApp = BaasicApp;
+var BaasicPlatform = (function (_super) {
+    tslib_1.__extends(BaasicPlatform, _super);
+    function BaasicPlatform(options) {
+        return _super.call(this, getOptions(options)) || this;
+    }
+    return BaasicPlatform;
+}(baasic_sdk_javascript_1.BaasicPlatform));
+exports.BaasicPlatform = BaasicPlatform;
 function getOptions(options) {
     var defaults = {
         httpClient: function () { return new http_client_1.HttpClient(); }

@@ -51,6 +51,6 @@
   },
   "peerDependencies": {},
   "dependencies": {
-    "baasic-sdk-javascript": "2.0.5-beta07"
+    "baasic-sdk-javascript": "git+http://gits/baasic/baasic-sdk-javascript.git#feature/platform-clients"
   }
 }
