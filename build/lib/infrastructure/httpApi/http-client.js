@@ -62,7 +62,7 @@ function checkResponseStatus(response) {
     return response;
 }
 function createBaasicResponse(request, response) {
-    response = response || new Response(new Blob(), { status: null, statusText: null, headers: new Headers() });
+    response = response || Response.error();
     var contentType = response.headers.get('Content-Type') || 'application/json';
     var getBody = function () {
         if (contentType.indexOf('application/json') !== -1) {

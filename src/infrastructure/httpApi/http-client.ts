@@ -64,7 +64,7 @@ function checkResponseStatus(response: Response): Response {
 }
 
 function createBaasicResponse<TData>(request: Request, response: Response): PromiseLike<IHttpResponse<TData>> {
-    response = response || new Response(new Blob(), { status: null, statusText: null, headers: new Headers() });
+    response = response || Response.error();
 
     const contentType = response.headers.get('Content-Type') || 'application/json';
     const getBody = () => {
