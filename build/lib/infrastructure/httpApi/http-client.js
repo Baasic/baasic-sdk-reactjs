@@ -62,6 +62,7 @@ function checkResponseStatus(response) {
     return response;
 }
 function createBaasicResponse(request, response) {
+    response = response || new Response(new Blob(), { status: null, statusText: null, headers: new Headers() });
     var contentType = response.headers.get('Content-Type') || 'application/json';
     var getBody = function () {
         if (contentType.indexOf('application/json') !== -1) {
@@ -77,8 +78,8 @@ function createBaasicResponse(request, response) {
         data: null
     };
     return new Promise(function (resolve, reject) {
-        getBody().then(function (response) {
-            result.data = response;
+        getBody().then(function (r) {
+            result.data = r;
             resolve(result);
         }, function (error) {
             resolve(result);

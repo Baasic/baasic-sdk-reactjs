@@ -64,6 +64,8 @@ function checkResponseStatus(response: Response): Response {
 }
 
 function createBaasicResponse<TData>(request: Request, response: Response): PromiseLike<IHttpResponse<TData>> {
+    response = response || new Response(new Blob(), { status: null, statusText: null, headers: new Headers() });
+
     const contentType = response.headers.get('Content-Type') || 'application/json';
     const getBody = () => {
         if (contentType.indexOf('application/json') !== -1) {
@@ -82,8 +84,8 @@ function createBaasicResponse<TData>(request: Request, response: Response): Prom
     };
 
     return new Promise(function (resolve, reject) {
-        getBody().then(function (response) {
-            result.data = response;
+        getBody().then(function (r) {
+            result.data = r;
             resolve(result);
         }, function (error) {
             resolve(result);
