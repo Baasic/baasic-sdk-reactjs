@@ -33,7 +33,7 @@ function createOptions(request: IHttpRequest): RequestInit {
     let data;
     if (request.data) {
         let dataType: string = headers['Content-Type'];
-        if (dataType.indexOf('application/json') !== -1) {
+        if (dataType && dataType.indexOf('application/json') !== -1) {
             data = JSON.stringify(request.data);
         } else {
             data = request.data;

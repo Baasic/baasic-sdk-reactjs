@@ -36,7 +36,7 @@ function createOptions(request) {
     var data;
     if (request.data) {
         var dataType = headers['Content-Type'];
-        if (dataType.indexOf('application/json') !== -1) {
+        if (dataType && dataType.indexOf('application/json') !== -1) {
             data = JSON.stringify(request.data);
         }
         else {
