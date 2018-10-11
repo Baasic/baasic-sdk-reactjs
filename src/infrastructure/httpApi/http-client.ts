@@ -71,7 +71,9 @@ function createBaasicResponse<TData>(request: Request, response: Response): Prom
         if (contentType.indexOf('application/json') !== -1) {
             return response.json();
         }
-
+        else if (contentType.includes('image')) {
+            return response.blob();
+        }
         return response.text();
     }
 

@@ -68,6 +68,9 @@ function createBaasicResponse(request, response) {
         if (contentType.indexOf('application/json') !== -1) {
             return response.json();
         }
+        else if (contentType.includes('image')) {
+            return response.blob();
+        }
         return response.text();
     };
     var result = {
