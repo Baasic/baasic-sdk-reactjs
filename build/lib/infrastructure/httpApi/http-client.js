@@ -36,7 +36,7 @@ function createOptions(request) {
     var data;
     if (request.data) {
         var dataType = headers['Content-Type'];
-        if (dataType.indexOf('application/json') !== -1) {
+        if (dataType && dataType.indexOf('application/json') !== -1) {
             data = JSON.stringify(request.data);
         }
         else {
@@ -62,10 +62,14 @@ function checkResponseStatus(response) {
     return response;
 }
 function createBaasicResponse(request, response) {
+    response = response || Response.error();
     var contentType = response.headers.get('Content-Type') || 'application/json';
     var getBody = function () {
         if (contentType.indexOf('application/json') !== -1) {
             return response.json();
+        }
+        else if (contentType.includes('image')) {
+            return response.blob();
         }
         return response.text();
     };
@@ -77,8 +81,8 @@ function createBaasicResponse(request, response) {
         data: null
     };
     return new Promise(function (resolve, reject) {
-        getBody().then(function (response) {
-            result.data = response;
+        getBody().then(function (r) {
+            result.data = r;
             resolve(result);
         }, function (error) {
             resolve(result);

@@ -33,7 +33,7 @@ function createOptions(request: IHttpRequest): RequestInit {
     let data;
     if (request.data) {
         let dataType: string = headers['Content-Type'];
-        if (dataType.indexOf('application/json') !== -1) {
+        if (dataType && dataType.indexOf('application/json') !== -1) {
             data = JSON.stringify(request.data);
         } else {
             data = request.data;
@@ -64,12 +64,16 @@ function checkResponseStatus(response: Response): Response {
 }
 
 function createBaasicResponse<TData>(request: Request, response: Response): PromiseLike<IHttpResponse<TData>> {
+    response = response || Response.error();
+
     const contentType = response.headers.get('Content-Type') || 'application/json';
     const getBody = () => {
         if (contentType.indexOf('application/json') !== -1) {
             return response.json();
         }
-
+        else if (contentType.includes('image')) {
+            return response.blob();
+        }
         return response.text();
     }
 
@@ -82,8 +86,8 @@ function createBaasicResponse<TData>(request: Request, response: Response): Prom
     };
 
     return new Promise(function (resolve, reject) {
-        getBody().then(function (response) {
-            result.data = response;
+        getBody().then(function (r) {
+            result.data = r;
             resolve(result);
         }, function (error) {
             resolve(result);
