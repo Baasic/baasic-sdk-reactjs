@@ -1,8 +1,6 @@
 "use strict";
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
 Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = require("tslib");
 require("reflect-metadata");
-__export(require("./baasicApp"));
-__export(require("./infrastructure/httpApi/index"));
+tslib_1.__exportStar(require("./baasicApp"), exports);
+tslib_1.__exportStar(require("./infrastructure/httpApi/index"), exports);

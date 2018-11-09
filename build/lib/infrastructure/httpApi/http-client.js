@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var HttpClient = (function () {
+var HttpClient = /** @class */ (function () {
     function HttpClient() {
     }
     HttpClient.prototype.createPromise = function (deferFn) {
@@ -13,13 +13,13 @@ var HttpClient = (function () {
             fetch(fetchRequest)
                 .then(checkResponseStatus)
                 .then(function (response) {
-                createBaasicResponse(fetchRequest, response)
+                createBaasicResponse(request, response)
                     .then(function (result) {
                     resolve(result);
                 });
             })
                 .catch(function (ex) {
-                createBaasicResponse(fetchRequest, ex.response)
+                createBaasicResponse(request, ex.response)
                     .then(function (result) {
                     reject(result);
                 });
@@ -30,7 +30,6 @@ var HttpClient = (function () {
     return HttpClient;
 }());
 exports.HttpClient = HttpClient;
-;
 function createOptions(request) {
     var headers = request.headers || new Headers();
     var data;
@@ -61,8 +60,32 @@ function checkResponseStatus(response) {
     }
     return response;
 }
+function mapResponseHeaders(headers) {
+    if (!headers) {
+        return null;
+    }
+    var responseHeaders = {};
+    headers.forEach(function (value, key) {
+        responseHeaders[key] = value;
+    });
+    return responseHeaders;
+}
+function createErrorResponse(request) {
+    var result = {
+        request: request,
+        headers: null,
+        statusCode: 0,
+        statusText: '',
+        data: null
+    };
+    return new Promise(function (resolve, reject) {
+        reject(result);
+    });
+}
 function createBaasicResponse(request, response) {
-    response = response || Response.error();
+    if (!response) {
+        return createErrorResponse(request);
+    }
     var contentType = response.headers.get('Content-Type') || 'application/json';
     var getBody = function () {
         if (contentType.indexOf('application/json') !== -1) {
@@ -75,7 +98,7 @@ function createBaasicResponse(request, response) {
     };
     var result = {
         request: request,
-        headers: response.headers,
+        headers: mapResponseHeaders(response.headers),
         statusCode: response.status,
         statusText: response.statusText,
         data: null

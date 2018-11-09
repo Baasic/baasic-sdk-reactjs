@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var baasic_sdk_javascript_1 = require("baasic-sdk-javascript");
 var http_client_1 = require("./infrastructure/httpApi/http-client");
-var BaasicApp = (function (_super) {
+var BaasicApp = /** @class */ (function (_super) {
     tslib_1.__extends(BaasicApp, _super);
     function BaasicApp(apiKey, options) {
         return _super.call(this, apiKey, getOptions(options)) || this;
@@ -11,7 +11,7 @@ var BaasicApp = (function (_super) {
     return BaasicApp;
 }(baasic_sdk_javascript_1.BaasicApp));
 exports.BaasicApp = BaasicApp;
-var BaasicPlatform = (function (_super) {
+var BaasicPlatform = /** @class */ (function (_super) {
     tslib_1.__extends(BaasicPlatform, _super);
     function BaasicPlatform(options) {
         return _super.call(this, getOptions(options)) || this;
