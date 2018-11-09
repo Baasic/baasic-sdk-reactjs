@@ -1,4 +1,4 @@
-import { IHttpClient, IHttpRequest, IHttpResponse, IHttpHeaders } from 'baasic-sdk-javascript';
+import {IHttpClient, IHttpRequest, IHttpResponse, IHttpHeaders} from 'baasic-sdk-javascript';
 
 export class HttpClient implements IHttpClient {
     createPromise<TData>(deferFn: (resolve: (TData) => void, reject: (any) => void) => void): PromiseLike<TData> {
@@ -12,20 +12,20 @@ export class HttpClient implements IHttpClient {
             fetch(fetchRequest)
                 .then(checkResponseStatus)
                 .then(response => {
-                    createBaasicResponse<ResponseType>(fetchRequest, response)
+                    createBaasicResponse<ResponseType>(request, response)
                         .then(function (result) {
                             resolve(result);
                         });
                 })
                 .catch(ex => {
-                    createBaasicResponse<ResponseType>(fetchRequest, ex.response)
+                    createBaasicResponse<ResponseType>(request, ex.response)
                         .then(function (result) {
                             reject(result);
                         });
                 });
         })
     };
-};
+}
 
 function createOptions(request: IHttpRequest): RequestInit {
     let headers = request.headers || new Headers();
@@ -63,8 +63,38 @@ function checkResponseStatus(response: Response): Response {
     return response;
 }
 
-function createBaasicResponse<TData>(request: Request, response: Response): PromiseLike<IHttpResponse<TData>> {
-    response = response || Response.error();
+function mapResponseHeaders(headers: Headers): IHttpHeaders {
+    if (!headers) {
+        return null;
+    }
+
+    let responseHeaders: IHttpHeaders = {};
+
+    headers.forEach((value, key) => {
+        responseHeaders[key] = value;
+    });
+
+    return responseHeaders;
+}
+
+function createErrorResponse<TData>(request: IHttpRequest): PromiseLike<IHttpResponse<TData>> {
+    const result: IHttpResponse<TData> = {
+        request: request,
+        headers: null,
+        statusCode: 0,
+        statusText: '',
+        data: null
+    };
+
+    return new Promise((resolve, reject) => {
+        reject(result)
+    });
+}
+
+function createBaasicResponse<TData>(request: IHttpRequest, response: Response): PromiseLike<IHttpResponse<TData>> {
+    if (!response) {
+        return createErrorResponse(request);
+    }
 
     const contentType = response.headers.get('Content-Type') || 'application/json';
     const getBody = () => {
@@ -75,11 +105,11 @@ function createBaasicResponse<TData>(request: Request, response: Response): Prom
             return response.blob();
         }
         return response.text();
-    }
+    };
 
     const result: IHttpResponse<TData> = {
         request: request,
-        headers: response.headers,
+        headers: mapResponseHeaders(response.headers),
         statusCode: response.status,
         statusText: response.statusText,
         data: null
