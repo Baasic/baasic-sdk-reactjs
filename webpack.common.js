@@ -15,9 +15,7 @@ module.exports = {
      * Entry point to the application, webpack will bundle all imported modules.
      */
     entry: {
-        'app': [
-            './src/index.ts'
-        ]
+        app: './src/index.ts'
     },
     /**
      * Rule for which files should be transpiled via typescript loader.
@@ -54,8 +52,8 @@ module.exports = {
      * Specify output as an UMD library.
      */
     output: {
-        path: 'build/dist',
-        filename: 'baasic-sdk-react.js',
+        path: path.resolve('build/dist'),
+        filename: 'baasic-sdk-reactjs.js',
         library: 'baasicSdkReactJs',
         libraryTarget: 'umd'
     },
@@ -67,4 +65,4 @@ module.exports = {
             amd: 'baasic-sdk-javascript'
         }
     }
-}
+};
