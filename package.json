@@ -1,6 +1,6 @@
 {
   "name": "baasic-sdk-reactjs",
-  "version": "2.0.0-beta01",
+  "version": "2.0.1-beta01",
   "description": "ReactJS SDK provides core functionality for building web and mobile applications on [Baasic](http://www.baasic.com/).",
   "keywords": [
     "Baasic",
@@ -35,7 +35,7 @@
     "build/lib/*"
   ],
   "dependencies": {
-    "baasic-sdk-javascript": "2.0.10-beta01"
+    "baasic-sdk-javascript": "2.0.11-beta01"
   },
   "devDependencies": {
     "@types/node": "10.12.3",
