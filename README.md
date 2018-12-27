@@ -2,12 +2,6 @@
 
 Baasic ReactJS library provides integration access to [Baasic REST API](http://dev.baasic.com/api/reference/home) end-points.
 
-# Comming soon
+# Usage
 
-We are working on sdk implementation, stay tuned.
-
-# Other
-
-* Help us write the documentation
-* Create interesting apps using SDK
-* Looking for something else to do? Get in <u>touch</u> ...
+For detailed explanation of how to use Baasic ReactJS SDK, check [Baasic JavaScript documentation](https://dev.baasic.com/sdks/javascript/index.html).
