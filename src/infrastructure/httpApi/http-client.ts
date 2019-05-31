@@ -20,6 +20,9 @@ export class HttpClient implements IHttpClient {
                 .catch(ex => {
                     createBaasicResponse<ResponseType>(request, ex.response)
                         .then(function (result) {
+                            // should never happen, but not sure.
+                            reject(result);
+                        }, function(result) {
                             reject(result);
                         });
                 });

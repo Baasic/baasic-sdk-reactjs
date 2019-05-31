@@ -21,6 +21,9 @@ var HttpClient = /** @class */ (function () {
                 .catch(function (ex) {
                 createBaasicResponse(request, ex.response)
                     .then(function (result) {
+                    // should never happen, but not sure.
+                    reject(result);
+                }, function (result) {
                     reject(result);
                 });
             });
