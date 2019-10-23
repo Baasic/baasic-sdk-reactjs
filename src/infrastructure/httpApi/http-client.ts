@@ -105,10 +105,12 @@ function createBaasicResponse<TData>(request: IHttpRequest, response: Response):
             return response.json();
         }
         else if (request.responseType) {
-            if (request.responseType === 'blob') {
+            const rType = request.responseType.toLowerCase();
+            if (rType === 'blob') {
                 return response.blob();
             }
-            else if (request.responseType === 'arraybuffer' || request.responseType === 'arrayBuffer') {
+            // can be arraybuffer or arrayBuffer
+            else if (rType === 'arraybuffer') {
                 return response.arrayBuffer();
             }
         }

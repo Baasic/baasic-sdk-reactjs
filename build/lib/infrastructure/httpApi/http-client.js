@@ -95,10 +95,12 @@ function createBaasicResponse(request, response) {
             return response.json();
         }
         else if (request.responseType) {
-            if (request.responseType === 'blob') {
+            var rType = request.responseType.toLowerCase();
+            if (rType === 'blob') {
                 return response.blob();
             }
-            else if (request.responseType === 'arraybuffer' || request.responseType === 'arrayBuffer') {
+            // can be arraybuffer or arrayBuffer
+            else if (rType === 'arraybuffer') {
                 return response.arrayBuffer();
             }
         }
