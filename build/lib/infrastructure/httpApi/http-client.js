@@ -94,6 +94,14 @@ function createBaasicResponse(request, response) {
         if (contentType.indexOf('application/json') !== -1) {
             return response.json();
         }
+        else if (request.responseType) {
+            if (request.responseType === 'blob') {
+                return response.blob();
+            }
+            else if (request.responseType === 'arraybuffer' || request.responseType === 'arrayBuffer') {
+                return response.arrayBuffer();
+            }
+        }
         else if (contentType.includes('image')) {
             return response.blob();
         }
