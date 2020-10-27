@@ -21,6 +21,9 @@ var HttpClient = /** @class */ (function () {
                 .catch(function (ex) {
                 createBaasicResponse(request, ex.response)
                     .then(function (result) {
+                    // should never happen, but not sure.
+                    reject(result);
+                }, function (result) {
                     reject(result);
                 });
             });
@@ -108,6 +111,16 @@ function createBaasicResponse(request, response) {
     var getBody = function () {
         if (contentType.indexOf('application/json') !== -1) {
             return response.json();
+        }
+        else if (request.responseType) {
+            var rType = request.responseType.toLowerCase();
+            if (rType === 'blob') {
+                return response.blob();
+            }
+            // can be arraybuffer or arrayBuffer
+            else if (rType === 'arraybuffer') {
+                return response.arrayBuffer();
+            }
         }
         else if (contentType.includes('image')) {
             return response.blob();
