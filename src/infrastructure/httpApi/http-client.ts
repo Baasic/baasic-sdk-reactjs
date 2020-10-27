@@ -20,6 +20,9 @@ export class HttpClient implements IHttpClient {
                 .catch(ex => {
                     createBaasicResponse<ResponseType>(request, ex.response)
                         .then(function (result) {
+                            // should never happen, but not sure.
+                            reject(result);
+                        }, function(result) {
                             reject(result);
                         });
                 });
@@ -100,6 +103,16 @@ function createBaasicResponse<TData>(request: IHttpRequest, response: Response):
     const getBody = () => {
         if (contentType.indexOf('application/json') !== -1) {
             return response.json();
+        }
+        else if (request.responseType) {
+            const rType = request.responseType.toLowerCase();
+            if (rType === 'blob') {
+                return response.blob();
+            }
+            // can be arraybuffer or arrayBuffer
+            else if (rType === 'arraybuffer') {
+                return response.arrayBuffer();
+            }
         }
         else if (contentType.includes('image')) {
             return response.blob();
