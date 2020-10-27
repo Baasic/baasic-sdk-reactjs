@@ -44,6 +44,9 @@ function createOptions(request: IHttpRequest): RequestInit {
         headers: headers,
         method: request.method
     };
+    if (request.abortSignal && request.abortSignal.signal) {
+        options.signal = request.abortSignal.signal;
+    }
 
     if (data) {
         options.body = data;
@@ -91,7 +94,24 @@ function createErrorResponse<TData>(request: IHttpRequest): PromiseLike<IHttpRes
     });
 }
 
+function createAbortedResponse<TData>(request: IHttpRequest): PromiseLike<IHttpResponse<TData>> {
+    const result: IHttpResponse<TData> = {
+        request: request,
+        headers: null,
+        statusCode: -1,
+        statusText: '',
+        data: null
+    };
+
+    return new Promise((resolve, reject) => {
+        resolve(result)
+    });
+}
+
 function createBaasicResponse<TData>(request: IHttpRequest, response: Response): PromiseLike<IHttpResponse<TData>> {
+    if (isAborted(request)) {
+        return createAbortedResponse(request);
+    }
     if (!response) {
         return createErrorResponse(request);
     }
@@ -123,4 +143,8 @@ function createBaasicResponse<TData>(request: IHttpRequest, response: Response):
             resolve(result);
         });
     });
+}
+
+function isAborted(request: IHttpRequest): boolean {
+    return request && request.abortSignal && request.abortSignal.signal && request.abortSignal.signal.aborted;
 }
