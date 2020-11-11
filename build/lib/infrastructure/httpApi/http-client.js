@@ -49,6 +49,9 @@ function createOptions(request) {
         headers: headers,
         method: request.method
     };
+    if (request.abortSignal && request.abortSignal.signal) {
+        options.signal = request.abortSignal.signal;
+    }
     if (data) {
         options.body = data;
     }
@@ -85,7 +88,22 @@ function createErrorResponse(request) {
         reject(result);
     });
 }
+function createAbortedResponse(request) {
+    var result = {
+        request: request,
+        headers: null,
+        statusCode: -1,
+        statusText: '',
+        data: null
+    };
+    return new Promise(function (resolve, reject) {
+        resolve(result);
+    });
+}
 function createBaasicResponse(request, response) {
+    if (isAborted(request)) {
+        return createAbortedResponse(request);
+    }
     if (!response) {
         return createErrorResponse(request);
     }
@@ -124,4 +142,7 @@ function createBaasicResponse(request, response) {
             resolve(result);
         });
     });
+}
+function isAborted(request) {
+    return request && request.abortSignal && request.abortSignal.signal && request.abortSignal.signal.aborted;
 }
