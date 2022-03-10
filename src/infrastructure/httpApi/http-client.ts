@@ -51,7 +51,6 @@ function createOptions(request: IHttpRequest): RequestInit {
         options.signal = request.abortSignal.signal;
     }
 
-
     if (data) {
         options.body = data;
     }
