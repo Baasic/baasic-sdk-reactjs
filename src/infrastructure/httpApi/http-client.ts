@@ -15,6 +15,8 @@ export class HttpClient implements IHttpClient {
                     createBaasicResponse<ResponseType>(request, response)
                         .then(function (result) {
                             resolve(result);
+                        }, function (result) {
+                            reject(result);
                         });
                 })
                 .catch(ex => {
@@ -153,6 +155,9 @@ function createBaasicResponse<TData>(request: IHttpRequest, response: Response):
             result.data = r;
             resolve(result);
         }, function (error) {
+            if (isAborted(request)) {
+                return createAbortedResponse(request).then(reject);
+            }
             resolve(result);
         });
     });
