@@ -16,6 +16,8 @@ var HttpClient = /** @class */ (function () {
                 createBaasicResponse(request, response)
                     .then(function (result) {
                     resolve(result);
+                }, function (result) {
+                    reject(result);
                 });
             })
                 .catch(function (ex) {
@@ -139,6 +141,9 @@ function createBaasicResponse(request, response) {
             result.data = r;
             resolve(result);
         }, function (error) {
+            if (isAborted(request)) {
+                return createAbortedResponse(request).then(reject);
+            }
             resolve(result);
         });
     });
