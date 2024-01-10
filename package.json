@@ -48,5 +48,8 @@
     "webpack-cli": "3.1.2",
     "webpack-merge": "4.1.4",
     "webpack-uglify-js-plugin": "1.1.9"
+  },
+  "dependencies": {
+    "core-js": "^3.35.0"
   }
 }
